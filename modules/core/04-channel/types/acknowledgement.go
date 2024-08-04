@@ -32,7 +32,9 @@ func NewResultAcknowledgement(result []byte) Acknowledgement {
 func NewErrorAcknowledgement(err error) Acknowledgement {
 	// the ABCI code is included in the abcitypes.ResponseDeliverTx hash
 	// constructed in Tendermint and is therefore deterministic
-	_, code, _ := sdkerrors.ABCIInfo(err, false) // discard non-determinstic codespace and log values
+	codespace, code, log := sdkerrors.ABCIInfo(err, false) // discard non-determinstic codespace and log values
+
+	fmt.Printf("IBC ERROR: %s : %d \n%s\n", codespace, code, log)
 
 	return Acknowledgement{
 		Response: &Acknowledgement_Error{
